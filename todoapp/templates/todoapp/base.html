@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>My Todo App</title>
-    
+
     <!-- materialize -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -17,10 +17,12 @@
         min-height:100vh;
         margin: 0 auto;
         background-color:white;
-        
+        display: flex;
+        flex-direction: column;
       }
       main {
         padding: 0 20px;
+        flex: 1 0 auto;
       }
       .brand-logo {
         margin-left:10px;
@@ -32,18 +34,20 @@
     </style>
   </head>
   <body>
-    <nav class="light-blue lighten-2">
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo"><i class="material-icons">ac_unit</i>Todo App</a>
-        <ul id="nav-mobile" class="right hide-on-small-and-down">
-          <li><a href="/admin/">Admin</a></li>
-        </ul>
-        <a href="#" data-target="slide-out" class="sidenav-trigger right hide-on-med-and-up"><i class="material-icons">menu</i></a>
-      </div>
-    </nav>
-    <ul id="slide-out" class="sidenav">
-      <li><a href="/admin/">Admin</a></li>
-    </ul>
+    <header>
+      <nav class="light-blue lighten-2">
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo"><i class="material-icons">ac_unit</i>Todo App</a>
+          <ul id="nav-mobile" class="right hide-on-small-and-down">
+            <li><a href="/admin/">Admin</a></li>
+          </ul>
+          <a href="#" data-target="slide-out" class="sidenav-trigger right hide-on-med-and-up"><i class="material-icons">menu</i></a>
+        </div>
+      </nav>
+      <ul id="slide-out" class="sidenav">
+        <li><a href="/admin/">Admin</a></li>
+      </ul>
+    </header>
     <main>
     {% block content %}
     {% endblock %}

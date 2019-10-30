@@ -42,17 +42,24 @@
     text-decoration:line-through;
   }
 
-  #clear_all .btn {
-    padding-bottom: 10px;
+  #clear_all {
+    padding: 10px;
+    margin: 10px 0 10px 0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-self:flex-end;
   }
 
 
 
+
 </style>
-<h3>Todo Items</h3>
-<div id="clear_all">
+
+  <h3>Todo Items</h3>
+<!-- <div id="clear_all">
   <a class="btn light-blue lighten-2" href="{% url 'todoapp:clear_all' %}"><i class = "material-icons"></i>clear all</a>
-</div>
+</div> -->
 
 <!-- FORM -->
 <form action="{% url 'todoapp:save_todo' %}" method="post">
@@ -109,11 +116,14 @@
       </div>
     </form>
     {% else %}
-    <a class="btn btn-floating light-blue lighten-2" href="{% url 'todoapp:delete_todo' todo_item.id %}"><i class = "material-icons">remove</i></a>
+    <a class="btn btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="delete" href="{% url 'todoapp:delete_todo' todo_item.id %}"><i class = "material-icons">remove</i></a>
     {% endif %}
   </div>
 </div>
 {% endfor %}
+<div id="clear_all">
+  <a class="btn light-blue lighten-2" id="clear_all" href="{% url 'todoapp:clear_all' %}"><i class = "material-icons"></i>clear all</a>
+</div>
 
 <!-- JAVASCRIPT -->
 <script type="text/javascript">
