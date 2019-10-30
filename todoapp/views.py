@@ -45,3 +45,9 @@ def delete_todo(request, todo_id):
     todo_item = TodoItem.objects.get(id=todo_id)
     todo_item.delete()
     return HttpResponseRedirect(reverse('todoapp:index'))
+
+def clear_all(request):
+    todo_items = TodoItem.objects.all()
+    todo_items.delete()
+
+    return HttpResponseRedirect(reverse('todoapp:index'))

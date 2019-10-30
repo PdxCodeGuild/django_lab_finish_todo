@@ -42,8 +42,17 @@
     text-decoration:line-through;
   }
 
+  #clear_all .btn {
+    padding-bottom: 10px;
+  }
+
+
+
 </style>
 <h3>Todo Items</h3>
+<div id="clear_all">
+  <a class="btn light-blue lighten-2" href="{% url 'todoapp:clear_all' %}"><i class = "material-icons"></i>clear all</a>
+</div>
 
 <!-- FORM -->
 <form action="{% url 'todoapp:save_todo' %}" method="post">
