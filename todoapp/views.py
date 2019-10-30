@@ -15,20 +15,20 @@ def index(request):
 
 # recieve a form submission to save a todo item
 def save_todo(request):
-    
+
     # get variables out of the form data
     todo_text = request.POST['todo_text']
     todo_type_ids = request.POST.getlist('todo_type_ids')
-    
+
     # create an instance of the model and save it
     todo_item = TodoItem(text=todo_text)
     todo_item.save()
-    
+
     # create many-to-many relationship with types
     for todo_type_id in todo_type_ids:
         todo_type = TodoItemType.objects.get(id=todo_type_id)
         todo_item.types.add(todo_type)
-    
+
     # redirect to the index page
     return HttpResponseRedirect(reverse('todoapp:index'))
 
@@ -39,4 +39,9 @@ def complete_todo(request):
     todo_item.date_completed = timezone.now()
     todo_item.save()
     return HttpResponseRedirect(reverse('todoapp:index'))
-    
+
+def delete_todo(request, todo_id):
+    # todo_item = get_object_or_404(TodoItem, pk=pk)
+    todo_item = TodoItem.objects.get(id=todo_id)
+    todo_item.delete()
+    return HttpResponseRedirect(reverse('todoapp:index'))
