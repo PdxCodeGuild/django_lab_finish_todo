@@ -6,7 +6,7 @@
 - Clone this repo `git clone https://github.com/PdxCodeGuild/django_lab_finish_todo`
 - Create a [branch](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging), `git branch <your name>`, `git checkout <branch name>`
 - Add the features listed below
-- Commit and push your changes (you'll have to be added as a contributor on github)
+- Commit and push your changes `git push --set-upstream origin <branch name>` (you'll have to be added as a contributor on github) 
 
 ## Features
 
