@@ -1,44 +1,8 @@
 {% extends 'todoapp/base.html' %}
 
 {% block content %}
-<style type="text/css">
-    .todo_item {
-        transition: all 200ms;
-        margin-bottom: 10px;
-        padding: 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-    }
 
-    input[type="text"]:focus {
-        border-bottom: 0.5px solid black !important;
-        box-shadow: none !important;
-    }
-
-    /* input[type="text"]:focus + label {
-    color:black !important;
-  } */
-
-    .flex_row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .todo_item .btn {
-        margin-left: 10px;
-    }
-
-    .completed {
-        color: grey;
-        text-decoration: line-through;
-    }
-</style>
-<h3>Edit Todo Item</h3>
+<div class="h3">Edit Todo Item</div>
 
 <div class="row">
     <form action="{% url 'todoapp:update_todo' todo_item.id %}" method="post" class="col s12">
@@ -71,17 +35,5 @@
     </form>
 </div>
 
-
-
-<!-- JAVASCRIPT -->
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        let elems_tooltips = document.querySelectorAll('.tooltipped')
-        let instances_tooltips = M.Tooltip.init(elems_tooltips, {})
-
-        let elems_selects = document.querySelectorAll('select');
-        let instances_selects = M.FormSelect.init(elems_selects, {});
-    });
-</script>
 
 {% endblock %}

@@ -1,82 +1,35 @@
 {% extends 'todoapp/base.html' %}
+{% load static %}
 
 {% block content %}
 <style type="text/css">
-    .todo_item {
-        transition: all 200ms;
-        margin-bottom: 10px;
-        padding: 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-    }
 
-    input[type="text"]:focus {
-        border-bottom: 0.5px solid black !important;
-        box-shadow: none !important;
-    }
-
-    /* input[type="text"]:focus + label {
-    color:black !important;
-  } */
-
-    .flex_row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .todo_item .btn {
-        margin-left: 10px;
-    }
-
-    .completed {
-        color: grey;
-        text-decoration: line-through;
-    }
 </style>
-<h3>Add New Todo Item</h3>
+<div class="h3">Add New Todo Item</div>
+
+
+
 <div class="row">
-    <form action="{% url 'todoapp:save_todo' %}" method="post" class="col s12">
+    <form class="col s12 input_form" action="{% url 'todoapp:save_todo' %}" method="post">
         {% csrf_token %}
         <div class="row">
             <div class="input-field col s5">
-                <div class="input-field inline">
-                    <input type="text" id="todo_text" name="todo_text" required />
-                    <label for="todo_text" class="black-text">Text</label>
-                </div>
-
+                <input type="text" id="todo_text" name="todo_text" required />
+                <label for="todo_text" class="black-text">Text</label>
             </div>
             <div class="input-field col s5">
-                <div class="input-field inline">
-                    <select name="todo_type_ids" multiple>
-                        {% for type in todo_types %}
-                        <option value="{{type.id}}">{{type.emoji}} {{type.name}}</option>
-                        {% endfor %}
-                    </select>
-                    <label>Types</label>
-                </div>
+                <select name="todo_type_ids" multiple>
+                    {% for type in todo_types %}
+                    <option value="{{type.id}}">{{type.emoji}} {{type.name}}</option>
+                    {% endfor %}
+                </select>
+                <label>Types</label>
             </div>
             <div class="col s2">
-                <button class="btn light-blue lighten-2">add</button>
+                <button class="btn-floating btn-large light-blue lighten-2"><i class="material-icons">add</i></button>
             </div>
         </div>
     </form>
 </div>
-
-
-<!-- JAVASCRIPT -->
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        let elems_tooltips = document.querySelectorAll('.tooltipped')
-        let instances_tooltips = M.Tooltip.init(elems_tooltips, {})
-
-        let elems_selects = document.querySelectorAll('select');
-        let instances_selects = M.FormSelect.init(elems_selects, {});
-    });
-</script>
 
 {% endblock %}

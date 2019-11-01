@@ -2,70 +2,11 @@
 
 {% block content %}
 <style type="text/css">
-    .todo_item {
-        transition: all 200ms;
-        margin-bottom: 10px;
-        padding: 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    }
 
-    .todo_item:hover {
-        -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-    }
-
-    input[type="text"]:focus {
-        border-bottom: 0.5px solid black !important;
-        box-shadow: none !important;
-    }
-
-    /* input[type="text"]:focus + label {
-    color:black !important;
-  } */
-
-    .flex_row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .flex_btn {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    .todo_item .btn {
-        margin-left: 10px;
-    }
-
-    .completed {
-        color: grey;
-        text-decoration: line-through;
-    }
-
-    .flex_btn .btn {
-        margin-right: 10px !important;
-    }
 </style>
-<h3>Todo Items</h3>
+<div class="h3">Todo Items</div>
 
-<div class="flex_row">
-    <a href="{% url 'todoapp:new_todo' %}" class="btn">New Todo Item</a>
-    <form action="{% url 'todoapp:delete_all' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="todo_item_delete_all" value="{{todo_item.id}}" />
-        <button class="btn red tooltipped" data-position="top" data-tooltip="Delete">Delete all</button>
-    </form>
-</div>
+
 <!-- TODO ITEMS -->
 <table class="striped">
     <thead>
@@ -119,6 +60,14 @@
 
 </table>
 
+<div class="flex_row_buttons">
+    <a href="{% url 'todoapp:new_todo' %}" class="btn">New Todo Item</a>
+    <form action="{% url 'todoapp:delete_all' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="todo_item_delete_all" value="{{todo_item.id}}" />
+        <button class="btn red tooltipped" data-position="top" data-tooltip="Delete">Delete all</button>
+    </form>
+</div>
 
 <!-- JAVASCRIPT -->
 <script type="text/javascript">

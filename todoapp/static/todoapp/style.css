@@ -1,0 +1,100 @@
+html {
+    background-color: lemonchiffon;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: white;
+}
+
+main {
+    padding: 0 20px;
+    flex: 1 0 auto;
+}
+
+.h3 {
+    font-size: 50px;
+    text-align: center;
+    margin: 50px 0;
+}
+
+.brand-logo {
+    margin-left: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+}
+
+input[type="text"]:focus {
+    border-bottom: 0.5px solid black !important;
+    box-shadow: none !important;
+}
+
+.flex_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex_row_buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex_row_buttons .btn {
+    margin: 100px 20px;
+}
+
+.todo_item .btn {
+    margin-left: 10px;
+}
+
+.completed {
+    color: grey;
+    text-decoration: line-through;
+}
+
+.todo_item {
+    transition: all 200ms;
+    margin-bottom: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+input[type="text"]:focus {
+    border-bottom: 0.5px solid black !important;
+    box-shadow: none !important;
+}
+
+.flex_btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex_btn .btn {
+    margin-right: 10px !important;
+}
+
+.todo_item .btn {
+    margin-left: 10px;
+}
+
+.completed {
+    color: grey;
+    text-decoration: line-through;
+}
