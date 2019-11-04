@@ -50,14 +50,6 @@ input[type="text"]:focus {
     align-items: center;
 }
 
-.flex_row_buttons .btn {
-    margin: 100px 20px;
-}
-
-.todo_item .btn {
-    margin-left: 10px;
-}
-
 .completed {
     color: grey;
     text-decoration: line-through;
@@ -86,6 +78,20 @@ input[type="text"]:focus {
     align-items: center;
 }
 
+.completed {
+    color: grey;
+    text-decoration: line-through;
+}
+
+.list-item-flex .btn {}
+
+.list-item-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .flex_btn .btn {
     margin-right: 10px !important;
 }
@@ -94,7 +100,29 @@ input[type="text"]:focus {
     margin-left: 10px;
 }
 
-.completed {
-    color: grey;
-    text-decoration: line-through;
+.flex_row_buttons .btn {
+    margin: 100px 20px;
+}
+
+.btn i {
+    margin: 0 !important;
+}
+
+.flex_collapse {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collapse_head {
+    font-weight: bold;
+}
+
+.collapse_head_description {
+    margin-top: 20px;
+}
+
+.emoji {
+    cursor: help;
 }

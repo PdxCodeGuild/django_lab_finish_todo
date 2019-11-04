@@ -5,29 +5,30 @@
 <div class="h3">Edit Todo Item</div>
 
 <div class="row">
-    <form action="{% url 'todoapp:update_todo' todo_item.id %}" method="post" class="col s12">
+    <form action="{% url 'todoapp:update_todo' todo_item.id %}" method="post" class="col s12 input-form">
         <input type="hidden" value="todo_item.id">
         {% csrf_token %}
         <div class="row">
-            <div class="input-field col s5">
-                <div class="input-field inline">
-                    <input type="text" id="todo_text" name="todo_text" required placeholder="{{ todo_item }}" value="{{ todo_item }}" />
-                    <label for=" todo_text" class="black-text">Text</label>
-                </div>
-
+            <div class="input-field col s7">
+                <input type="text" id="todo_text" name="todo_text" required placeholder="{{ todo_item }}" value="{{ todo_item }}" />
+                <label for=" todo_text" class="black-text">Text</label>
             </div>
+
             <div class="input-field col s5">
-                <div class="input-field inline">
+                <select name="todo_type_ids" multiple>
+                    {% for type in todo_types %}
 
-                    <select name="todo_type_ids" multiple>
-                        {% for type in todo_types %}
-
-                        <option value="{{type.id}}" {% if type in todo_item.types.all %} selected {% else %}{% endif %}>{{type.emoji}} {{type.name}}</option>
-                        {% endfor %}
-                    </select>
-                    <label></label>
-                </div>
+                    <option value="{{type.id}}" {% if type in todo_item.types.all %} selected {% else %}{% endif %}>{{type.emoji}} {{type.name}}</option>
+                    {% endfor %}
+                </select>
+                <label></label>
             </div>
+
+            <div class="input-field col s12">
+                <input type="text" id="todo_extra_text" name="todo_extra_text" class="materialize-textarea" placeholder="{{ todo_item.extra_text }}" value="{{ todo_item.extra_text }}">
+                <label for="todo_extra_text" class="black-text">Description</label>
+            </div>
+
             <div class="col s2">
                 <button class="btn light-blue lighten-2">Update</button>
             </div>

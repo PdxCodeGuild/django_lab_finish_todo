@@ -20,10 +20,12 @@ def save_todo(request):
     # get variables out of the form data
     todo_text = request.POST['todo_text']
     todo_type_ids = request.POST.getlist('todo_type_ids')
+    todo_extra_text = request.POST['todo_extra_text']
     
     # create an instance of the model and save it
-    todo_item = TodoItem(text=todo_text)
+    todo_item = TodoItem(text=todo_text, extra_text=todo_extra_text)
     todo_item.save()
+
     
     # create many-to-many relationship with types
     for todo_type_id in todo_type_ids:
@@ -85,9 +87,14 @@ def update_todo(request, todo_id):
     # get variables out of the form data
     todo_text = request.POST['todo_text']
     todo_type_ids = request.POST.getlist('todo_type_ids')
+    todo_extra_text = request.POST['todo_extra_text']
+    print(todo_text)
+    print(todo_extra_text)
     
     todo_item.text = todo_text
+    todo_item.extra_text = todo_extra_text
     todo_item.save()
+
     
     todo_item.types.clear()
     
@@ -97,7 +104,6 @@ def update_todo(request, todo_id):
         todo_item.types.add(todo_type)
         
     
-    
-    
     # redirect to the index page
     return HttpResponseRedirect(reverse('todoapp:index'))
+    

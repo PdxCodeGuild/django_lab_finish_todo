@@ -13,7 +13,7 @@
     <form class="col s12 input_form" action="{% url 'todoapp:save_todo' %}" method="post">
         {% csrf_token %}
         <div class="row">
-            <div class="input-field col s5">
+            <div class="input-field col s7">
                 <input type="text" id="todo_text" name="todo_text" required />
                 <label for="todo_text" class="black-text">Text</label>
             </div>
@@ -24,6 +24,10 @@
                     {% endfor %}
                 </select>
                 <label>Types</label>
+            </div>
+            <div class="input-field col s12">
+                <input type="text" id="todo_extra_text" name="todo_extra_text" class="materialize-textarea">
+                <label for="todo_extra_text" class="black-text">Description</label>
             </div>
             <div class="col s2">
                 <button class="btn-floating btn-large light-blue lighten-2"><i class="material-icons">add</i></button>

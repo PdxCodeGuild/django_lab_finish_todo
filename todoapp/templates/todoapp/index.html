@@ -8,7 +8,7 @@
 
 
 <!-- TODO ITEMS -->
-<table class="striped">
+<!-- <table class="striped">
     <thead>
         <tr>
             <th>Todo item</th>
@@ -20,6 +20,7 @@
 
     <tbody>
         {% for todo_item in todo_items %}
+
         <tr class="{% if todo_item.date_completed %}completed{% endif %}">
             <td>{{todo_item.text}}</td>
             <td>{% for type in todo_item.ordered_types %}
@@ -56,9 +57,60 @@
         {% endfor %}
     </tbody>
     </thead>
+</table> -->
 
 
-</table>
+
+
+<!-- COLLAPSIBLE LIST SECTION -->
+
+<ul class="collapsible">
+    {% for todo_item in todo_items %}
+    <li class="{% if todo_item.date_completed %}completed{% endif %}">
+        <div class="collapsible-header list-item-flex">
+            <div><i class="material-icons">check</i>{{todo_item.text}}</div>
+
+            <div class="flex_btn">
+                {% if not todo_item.date_completed %}
+                <form action="{% url 'todoapp:complete_todo' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="todo_item_id" value="{{todo_item.id}}" />
+                    <button class="btn light-blue lighten-2 tooltipped" data-position="top" data-tooltip="Complete"><i class="material-icons">check</i></button>
+                </form>
+                {% endif %}
+                {% if todo_item.date_completed %}
+                <form action="{% url 'todoapp:delete_todo' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="todo_item_delete" value="{{todo_item.id}}" />
+                    <button class="btn  red tooltipped" data-position="top" data-tooltip="Delete"><i class="material-icons">cancel</i></button>
+                </form>
+                {% endif %}
+                <a class="btn" href="{% url 'todoapp:edit_todo' todo_item.id %}">
+                    <i class="material-icons">edit</i>
+                </a>
+
+            </div>
+
+        </div>
+        <div class="collapsible-body">
+            <div class="flex_collapse">
+                <div><span class="collapse_head">Type:&nbsp;&nbsp;&nbsp;</span>{% for type in todo_item.ordered_types %}<span class="tooltipped emoji" data-position="top" data-tooltip="{{type}}">
+                        {{ type.emoji }}</span>{% endfor %}</div>
+                <div><span class="collapse_head">Created on:&nbsp;&nbsp;&nbsp;</span>{{ todo_item.date_created }}</div>
+                <div>{% if todo_item.date_completed == None %} {% else %}<span class="collapse_head">Completed date:&nbsp;&nbsp;&nbsp;</span>{{ todo_item.date_completed }}{% endif %}</div>
+            </div>
+
+
+            <div class="collapse_head_description">{% if todo_item.extra_text %}<span class="collapse_head">Description:&nbsp;&nbsp;&nbsp;</span>{% else %}{% endif %}
+                {% if todo_item.extra_text %}{{todo_item.extra_text}}{% else %}{% endif %}</div>
+
+    </li>
+
+    {% endfor %}
+</ul>
+
+
+
 
 <div class="flex_row_buttons">
     <a href="{% url 'todoapp:new_todo' %}" class="btn">New Todo Item</a>

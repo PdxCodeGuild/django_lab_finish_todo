@@ -41,6 +41,11 @@
             var elems_sidenav = document.querySelectorAll('.sidenav')
             var instances_sidenav = M.Sidenav.init(elems_sidenav, {})
         })
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems_collapse = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems_collapse, {});
+        });
     </script>
 </body>
 
