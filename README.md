@@ -24,7 +24,7 @@
 
 ### Hard
 
-- Add a TextField with the name "extra_text" to the TodoItem model, use a [collaspible](https://materializecss.com/collapsible.html) to show the extra text on the index page
+- Add a TextField with the name "extra_text" to the TodoItem model, use a [collapsible](https://materializecss.com/collapsible.html) to show the extra text on the index page
 
 ### Ultra Hard
 
