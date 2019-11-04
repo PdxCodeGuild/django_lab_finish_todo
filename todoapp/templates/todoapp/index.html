@@ -70,22 +70,22 @@
         <div class="collapsible-header list-item-flex">
             <div><i class="material-icons">check</i>{{todo_item.text}}</div>
 
-            <div class="flex_btn">
+            <div class="flex_btn no_collapse">
                 {% if not todo_item.date_completed %}
                 <form action="{% url 'todoapp:complete_todo' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="todo_item_id" value="{{todo_item.id}}" />
-                    <button class="btn light-blue lighten-2 tooltipped" data-position="top" data-tooltip="Complete"><i class="material-icons">check</i></button>
+                    <button class="no_collapse btn light-blue lighten-2 tooltipped" data-position="top" data-tooltip="Complete"><i class="material-icons">check</i></button>
                 </form>
                 {% endif %}
                 {% if todo_item.date_completed %}
                 <form action="{% url 'todoapp:delete_todo' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="todo_item_delete" value="{{todo_item.id}}" />
-                    <button class="btn  red tooltipped" data-position="top" data-tooltip="Delete"><i class="material-icons">cancel</i></button>
+                    <button class="no_collapse btn  red tooltipped" data-position="top" data-tooltip="Delete"><i class="material-icons">cancel</i></button>
                 </form>
                 {% endif %}
-                <a class="btn tooltipped" data-position="top" data-tooltip="Edit" href="{% url 'todoapp:edit_todo' todo_item.id %}">
+                <a class="no_collapse btn tooltipped" data-position="top" data-tooltip="Edit" href="{% url 'todoapp:edit_todo' todo_item.id %}">
                     <i class="material-icons">edit</i>
                 </a>
 
@@ -127,8 +127,18 @@
         let elems_tooltips = document.querySelectorAll('.tooltipped')
         let instances_tooltips = M.Tooltip.init(elems_tooltips, {})
 
+
         let elems_selects = document.querySelectorAll('select');
         let instances_selects = M.FormSelect.init(elems_selects, {});
     });
+
+    let no_collapse = document.querySelectorAll(".no_collapse")
+
+    for (let i = 0; i < no_collapse.length; ++i) {
+        no_collapse[i].addEventListener("click", function(e) {
+
+            e.stopPropagation();
+        })
+    }
 </script>
 {% endblock %}
