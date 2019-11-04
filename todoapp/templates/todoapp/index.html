@@ -85,7 +85,7 @@
                     <button class="btn  red tooltipped" data-position="top" data-tooltip="Delete"><i class="material-icons">cancel</i></button>
                 </form>
                 {% endif %}
-                <a class="btn" href="{% url 'todoapp:edit_todo' todo_item.id %}">
+                <a class="btn tooltipped" data-position="top" data-tooltip="Edit" href="{% url 'todoapp:edit_todo' todo_item.id %}">
                     <i class="material-icons">edit</i>
                 </a>
 
