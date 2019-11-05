@@ -1,17 +1,19 @@
 from django.shortcuts import render, reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import timezone
 from .models import TodoItem, TodoItemType
+from django.contrib.auth.decorators import login_required
 
 # index page, list todo items and a form
+@login_required
 def index(request):
-    todo_items = TodoItem.objects.order_by('date_completed', 'date_created')
+    todo_items = request.user.todo_items.order_by('date_completed', 'date_created')
     context = {
         'todo_items': todo_items,
     }
     return render(request, 'todoapp/index.html', context)
 
-
+@login_required
 def new(request):
     todo_types = TodoItemType.objects.order_by('name')
     context = {
@@ -19,8 +21,12 @@ def new(request):
     }
     return render(request, 'todoapp/new.html', context)
 
+@login_required
 def edit(request, todo_item_id):
     todo_item = TodoItem.objects.get(id=todo_item_id)
+    if todo_item.user.id != request.user.id:
+        raise Http404
+        # return HttpResponseRedirect(reverse('users:login_register'))
     todo_types = TodoItemType.objects.order_by('name')
     context = {
         'todo_item': todo_item,
@@ -28,6 +34,7 @@ def edit(request, todo_item_id):
     }
     return render(request, 'todoapp/edit.html', context)
 
+@login_required
 def save_edit(request):
     # get variables out of the form data
     todo_id = request.POST['todo_id']
@@ -52,6 +59,7 @@ def save_edit(request):
 
 
 # recieve a form submission to save a todo item
+@login_required
 def save_todo(request):
     
     # get variables out of the form data
@@ -60,7 +68,7 @@ def save_todo(request):
     todo_extra_text = request.POST['todo_extra_text']
     
     # create an instance of the model and save it
-    todo_item = TodoItem(text=todo_text, extra_text=todo_extra_text)
+    todo_item = TodoItem(text=todo_text, extra_text=todo_extra_text, user=request.user)
     todo_item.save()
     
     # create many-to-many relationship with types
@@ -72,6 +80,7 @@ def save_todo(request):
     return HttpResponseRedirect(reverse('todoapp:index'))
 
 # receieve a form submission to complete a todo item
+@login_required
 def complete_todo(request):
     todo_item_id = request.POST['todo_item_id']
     todo_item = TodoItem.objects.get(id=todo_item_id)
@@ -79,18 +88,20 @@ def complete_todo(request):
     todo_item.save()
     return HttpResponseRedirect(reverse('todoapp:index'))
 
+@login_required
 def clear_todo(request, todo_item_id):
     todo_item = TodoItem.objects.get(id=todo_item_id)
     todo_item.delete()
     return HttpResponseRedirect(reverse('todoapp:index'))
 
+@login_required
 def clear_tags(request):
     todo_item_id = request.GET['todo_item_id']
     todo_item = TodoItem.objects.get(id=todo_item_id)
     todo_item.types.clear()
     return HttpResponseRedirect(reverse('todoapp:index'))
 
-
+@login_required
 def clear_all(request):
     todo_items = TodoItem.objects.filter(date_completed__isnull=False)
     todo_items.delete()

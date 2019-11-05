@@ -42,9 +42,14 @@
   <body>
     <nav class="light-blue lighten-2">
       <div class="nav-wrapper">
-        <a href="{% url 'todoapp:index' %}" class="brand-logo"><i class="material-icons">ac_unit</i>Todo App</a>
+        <a href="{% url 'todoapp:index' %}" class="brand-logo"><i class="material-icons">ac_unit</i>Todo App{% if user.is_authenticated %} - {{user.username}}{% endif %}</a>
         <ul id="nav-mobile" class="right hide-on-small-and-down">
-          <li><a href="/admin/">Admin</a></li>
+          {% comment %}<li><a href="/admin/">Admin</a></li>{% endcomment %}
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'users:logout_user' %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'users:login_register' %}">Login</a></li>
+          {% endif %}
         </ul>
         <a href="#" data-target="slide-out" class="sidenav-trigger right hide-on-med-and-up"><i class="material-icons">menu</i></a>
       </div>

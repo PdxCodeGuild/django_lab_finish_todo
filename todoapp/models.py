@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class TodoItemType(models.Model):
     name = models.CharField(max_length=200)
@@ -15,14 +15,12 @@ class TodoItem(models.Model):
     date_completed = models.DateTimeField(null=True, blank=True)
     extra_text = models.TextField()
     types = models.ManyToManyField(TodoItemType)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='todo_items')
     
     def ordered_types(self):
         return self.types.order_by('name')
     
     def __str__(self):
-        return self.text
-    
-
-    
+        return self.user.username + ' ' + self.text
 
 
