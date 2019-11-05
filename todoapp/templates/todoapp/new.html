@@ -10,28 +10,20 @@
 <h3>New Todo Item</h3>
 <form action="{% url 'todoapp:save_todo' %}" method="post">
   {% csrf_token %}
-  <div class="row">
-    <div class="col s5">
-      <div class="input-field inline">
-        <input type="text" id="todo_text" name="todo_text" required/>
-        <label for="todo_text" class="black-text">Text</label>
-      </div>
-      
-    </div>
-    <div class="col s5">
-      <div class="input-field inline">
-        <select name="todo_type_ids" multiple>
-          {% for type in todo_types %}
-          <option value="{{type.id}}">{{type.emoji}} {{type.name}}</option>
-          {% endfor %}
-        </select>
-        <label>Types</label>
-      </div>
-    </div>
-    <div class="col s2">
-      <button class="btn light-blue lighten-2 btn_add"><i class="material-icons">add</i></button>
-    </div>
+  <div class="input-field">
+    <input type="text" id="todo_text" name="todo_text" required/>
+    <label for="todo_text" class="black-text">Text</label>
   </div>
+  <div class="input-field">
+    <select name="todo_type_ids" multiple>
+      {% for type in todo_types %}
+      <option value="{{type.id}}">{{type.emoji}} {{type.name}}</option>
+      {% endfor %}
+    </select>
+    <label>Types</label>
+  </div>
+  <textarea name="todo_extra_text" class="materialize-textarea"></textarea>
+  <button class="btn light-blue lighten-2 btn_add"><i class="material-icons">add</i></button>
 </form>
 <!-- JAVASCRIPT -->
 <script type="text/javascript">

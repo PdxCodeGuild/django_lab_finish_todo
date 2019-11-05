@@ -33,9 +33,11 @@ def save_edit(request):
     todo_id = request.POST['todo_id']
     todo_text = request.POST['todo_text']
     todo_type_ids = request.POST.getlist('todo_type_ids')
+    todo_extra_text = request.POST['todo_extra_text']
     
     todo_item = TodoItem.objects.get(id=todo_id)
     todo_item.text = todo_text
+    todo_item.extra_text = todo_extra_text
     todo_item.save()
     
     todo_item.types.clear()
@@ -55,9 +57,10 @@ def save_todo(request):
     # get variables out of the form data
     todo_text = request.POST['todo_text']
     todo_type_ids = request.POST.getlist('todo_type_ids')
+    todo_extra_text = request.POST['todo_extra_text']
     
     # create an instance of the model and save it
-    todo_item = TodoItem(text=todo_text)
+    todo_item = TodoItem(text=todo_text, extra_text=todo_extra_text)
     todo_item.save()
     
     # create many-to-many relationship with types

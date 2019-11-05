@@ -3,21 +3,19 @@
 {% block content %}
 <style type="text/css">
   .todo_item {
-    transition: all 200ms;
-    margin-bottom:10px;
-    padding:20px;
     display:flex;
     flex-direction:row;
     justify-content:space-between;
     align-items:center;
-    cursor:pointer;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    text-align:center;
   }
-  .todo_item:hover {
+  .collapsible-header i {
+    margin-right:0;
+  }
+  /* .todo_item:hover {
     -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  }
+  } */
   input[type="text"]:focus {
     border-bottom: 0.5px solid black !important;
     box-shadow: none !important;
@@ -58,29 +56,40 @@
   </div>
 </div>
 
-
 <!-- TODO ITEMS -->
-{% for todo_item in todo_items %}
-<div class="todo_item tooltipped" data-position="top" data-tooltip="Created: {{ todo_item.date_created }}{% if todo_item.date_completed %}<br/>Completed: {{todo_item.date_completed}}{% endif %}">
-  <div class="{% if todo_item.date_completed %}completed{% endif %}">{{todo_item.text}}</div>
-  <div class="flex_row">
-    {% for type in todo_item.ordered_types %}
-    <span class="tooltipped" data-position="top" data-tooltip="{{type.name}}">{{ type.emoji }}</span>
-    {% endfor %}
-    <a href="{% url 'todoapp:clear_tags' %}?todo_item_id={{todo_item.id}}" class="btn btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="clear tags"><i class="material-icons">content_cut</i></a> 
-    {% if not todo_item.date_completed %}
-    <a href="{% url 'todoapp:edit' todo_item.id %}" class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="edit"><i class="material-icons">edit</i></a>
-    <form action="{% url 'todoapp:complete_todo' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="todo_item_id" value="{{todo_item.id}}"/>
-      <button class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="complete"><i class="material-icons">check</i></button>
-    </form>
-    {% else %}
-    <a href="{% url 'todoapp:clear_todo' todo_item.id %}" class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="clear"><i class="material-icons">close</i></a> 
-    {% endif %}
-  </div>
-</div>
-{% endfor %}
+{% if todo_items %}
+<ul class="collapsible">
+  {% for todo_item in todo_items %}
+  <li>
+    <div class="collapsible-header todo_item">
+      <div class="{% if todo_item.date_completed %}completed{% endif %}">{{todo_item.text}}</div>
+      <div class="flex_row">
+        {% for type in todo_item.ordered_types %}
+        <span class="tooltipped" data-position="top" data-tooltip="{{type.name}}">{{ type.emoji }}</span>
+        {% endfor %}
+        <a href="{% url 'todoapp:clear_tags' %}?todo_item_id={{todo_item.id}}" class="btn btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="clear tags"><i class="material-icons">content_cut</i></a> 
+        {% if not todo_item.date_completed %}
+        <a href="{% url 'todoapp:edit' todo_item.id %}" class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="edit"><i class="material-icons">edit</i></a>
+        <form action="{% url 'todoapp:complete_todo' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="todo_item_id" value="{{todo_item.id}}"/>
+          <button class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="complete"><i class="material-icons">check</i></button>
+        </form>
+        {% else %}
+        <a href="{% url 'todoapp:clear_todo' todo_item.id %}" class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="clear"><i class="material-icons">close</i></a> 
+        {% endif %}
+      </div>
+    </div>
+    <div class="collapsible-body">
+      <div>Created: {{ todo_item.date_created }}{% if todo_item.date_completed %}<br/>Completed: {{todo_item.date_completed}}{% endif %}</div>
+      <div>{{todo_item.extra_text | safe}}</div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div>No todo items</div>
+{% endif %}
 
 <!-- JAVASCRIPT -->
 <script type="text/javascript">
@@ -89,6 +98,20 @@
     let instances_tooltips = M.Tooltip.init(elems_tooltips, {
       enterDelay: 1000
     })
+    
+    var elems_collapsible = document.querySelectorAll('.collapsible');
+    var instances_collapsible = M.Collapsible.init(elems_collapsible, {});
+    
+    let btns = document.querySelectorAll('.collapsible .btn-floating')
+    for (let i=0; i<btns.length; ++i) {
+      btns[i].addEventListener('click', function(event) {
+        event.stopPropagation()
+      })
+    }
+    
   });
+  
+  
+  
 </script>
 {% endblock %}
