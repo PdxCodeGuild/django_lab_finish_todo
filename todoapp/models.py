@@ -14,6 +14,7 @@ class TodoItem(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_completed = models.DateTimeField(null=True, blank=True)
     types = models.ManyToManyField(TodoItemType)
+    extra_text = models.TextField(null = True, blank = True)
     
     def ordered_types(self):
         return self.types.order_by('name')

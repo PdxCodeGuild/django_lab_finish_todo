@@ -41,55 +41,63 @@
     color:grey;
     text-decoration:line-through;
   }
+
   
+  #top-btns {
+    display: flex;
+    flex-direction: row;
+  }
+
 </style>
 <h3>Todo Items</h3>
+<div id="top-btns">
+  <form action="{% url 'todoapp:clear_all' %}" method="post">
+      {% csrf_token %}
+      <button class="btn btn-floating red tooltipped" data-position="top" data-tooltip="clear all completed items"><i class="material-icons">delete</i></button>
+  </form>
+  <a href="/todoapp/save/" class="btn btn-floating light-blue">add</a>
+</div>
 
 <!-- FORM -->
-<form action="{% url 'todoapp:save_todo' %}" method="post">
-  {% csrf_token %}
-  <div class="row">
-    <div class="col s5">
-      <div class="input-field inline">
-        <input type="text" id="todo_text" name="todo_text" required/>
-        <label for="todo_text" class="black-text">Text</label>
-      </div>
-      
-    </div>
-    <div class="col s5">
-      <div class="input-field inline">
-        <select name="todo_type_ids" multiple>
-          {% for type in todo_types %}
-          <option value="{{type.id}}">{{type.emoji}} {{type.name}}</option>
-          {% endfor %}
-        </select>
-        <label>Types</label>
-      </div>
-    </div>
-    <div class="col s2">
-      <button class="btn light-blue lighten-2">add</button>
-    </div>
-  </div>
-</form>
+
 
 <!-- TODO ITEMS -->
-{% for todo_item in todo_items %}
-<div class="todo_item">
-  <div class="{% if todo_item.date_completed %}completed{% endif %}">{{todo_item.text}}</div>
-  <div class="flex_row">
-    {% for type in todo_item.ordered_types %}
-    <span class="tooltipped" data-position="top" data-tooltip="{{type.name}}">{{ type.emoji }}</span>
-    {% endfor %}
-    {% if not todo_item.date_completed %}
-    <form action="{% url 'todoapp:complete_todo' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="todo_item_id" value="{{todo_item.id}}"/>
-      <button class="btn btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="complete"><i class="material-icons">check</i></button>
-    </form>
-    {% endif %}
-  </div>
-</div>
-{% endfor %}
+<ul class="collapsible">
+  {% for todo_item in todo_items %}
+  <li>
+    <div class="collapsible-header todo_item">
+      <div class="{% if todo_item.date_completed %}completed{% endif %}">{{todo_item.text}}</div>
+      <i class="material-icons tooltipped" data-position="top" data-tooltip="Created: {{todo_item.date_created}} {% if todo_item.date_completed %} Completed: {{todo_item.date_completed}}{% else %}not completed{% endif %}">alarm</i>
+      <!-- <div>
+        {{todo_item.date_created}}
+        {% if todo_item.date_completed %}{{todo_item.date_completed}}
+        {% else %}not completed{% endif %}
+      </div> -->
+      <div class="flex_row">
+        {% for type in todo_item.ordered_types %}
+        <span class="tooltipped" data-position="top" data-tooltip="{{type.name}}">{{ type.emoji }}</span>
+        {% endfor %}
+        {% if not todo_item.date_completed %}
+        <form action="{% url 'todoapp:complete_todo' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="todo_item_id" value="{{todo_item.id}}"/>
+          <button class="btn btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="complete"><i class="material-icons">check</i></button>
+        </form>
+        <a href="/todoapp/edit/{{todo_item.id}}/" class="btn btn-floating green">edit</a>
+        {% endif %}
+        {% if todo_item.date_completed %}
+        <form action="{% url 'todoapp:clear_todo' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="todo_item_id" value="{{todo_item.id}}"/>
+          <button class="btn btn-floating red lighten-2 tooltipped" data-position="top" data-tooltip="clear"><i class="material-icons">delete_outline</i></button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    <div class="collapsible-body"><span>{{todo_item.extra_text}}</span></div>
+  </li>
+  {% endfor %}
+</ul>
 
 <!-- JAVASCRIPT -->
 <script type="text/javascript">
@@ -99,6 +107,10 @@
     
     let elems_selects = document.querySelectorAll('select');
     let instances_selects = M.FormSelect.init(elems_selects, {});
+
+    let elems = document.querySelectorAll('.collapsible');
+    let instances = M.Collapsible.init(elems, {});
   });
+
 </script>
 {% endblock %}

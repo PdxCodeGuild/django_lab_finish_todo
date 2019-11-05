@@ -9,15 +9,22 @@ def index(request):
     todo_types = TodoItemType.objects.order_by('name')
     context = {
         'todo_items': todo_items,
-        'todo_types': todo_types
+        'todo_types': todo_types,
     }
     return render(request, 'todoapp/index.html', context)
 
 # recieve a form submission to save a todo item
+
+def save_page(request):
+    todo_types = TodoItemType.objects.order_by('name')
+    context = {'todo_types':todo_types}
+    return render(request, 'todoapp/save.html', context)
+
 def save_todo(request):
     
     # get variables out of the form data
     todo_text = request.POST['todo_text']
+    todo_extra_text = request.POST['extra_text']
     todo_type_ids = request.POST.getlist('todo_type_ids')
     
     # create an instance of the model and save it
@@ -30,7 +37,7 @@ def save_todo(request):
         todo_item.types.add(todo_type)
     
     # redirect to the index page
-    return HttpResponseRedirect(reverse('todoapp:index'))
+    return index(request)
 
 # receieve a form submission to complete a todo item
 def complete_todo(request):
@@ -39,4 +46,43 @@ def complete_todo(request):
     todo_item.date_completed = timezone.now()
     todo_item.save()
     return HttpResponseRedirect(reverse('todoapp:index'))
+
+def clear_todo(request):
+    todo_item_id = request.POST['todo_item_id']
+    todo_item = TodoItem.objects.get(id=todo_item_id)
+    todo_item.delete()
+    return HttpResponseRedirect(reverse('todoapp:index'))
+
+def clear_all(request):
+    items = TodoItem.objects.all()
+    for item in items:
+        if item.date_completed:
+            item.delete()
+    return HttpResponseRedirect(reverse('todoapp:index'))
+
+def edit_page(request, todo_item_id):
+    todo_types = TodoItemType.objects.order_by('name')
+    # todo_item_id = request.POST['todo_item_id']
+    todo_item = TodoItem.objects.get(id=todo_item_id)
+
+    context = {
+        'todo_item':todo_item,
+        'todo_types':todo_types
+        }
+    
+    return render(request, 'todoapp/edit.html', context)
+
+
+def edit_todo(request):
+    todo_item_id = request.POST['todo_item_id']
+    todo_item = TodoItem.objects.get(id=todo_item_id)
+
+
+    todo_item.text = request.POST['new_text']
+    todo_item.extra_text = request.POST['extra_text']
+    todo_item.types.set(TodoItemType.objects.filter(id__in=request.POST.getlist('new_types')))
+
+    todo_item.save()
+    return HttpResponseRedirect(reverse('todoapp:index'))
+
     
