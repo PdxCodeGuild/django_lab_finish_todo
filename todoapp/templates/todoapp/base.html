@@ -12,18 +12,23 @@
       html {
         background-color:lemonchiffon;
       }
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
       main {
+        width:100%;
         max-width:600px;
-        min-height:100vh;
         margin: 0 auto;
         background-color:white;
-        display: flex;
-        flex-direction: column;
-        padding: 0 20px;
+        padding: 0 20px 40px 20px;
+        flex: 1 0 auto;
       }
       nav, footer {
         max-width:600px;
         margin: 0 auto;
+        width:100%;
       }
       .brand-logo {
         margin-left:10px;
@@ -32,15 +37,6 @@
         text-align:center;
         padding:20px;
       }
-      
-
-
-      main {
-        flex: 1 0 auto;
-      }
-      
-      
-      
     </style>
   </head>
   <body>
