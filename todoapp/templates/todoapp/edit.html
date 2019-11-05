@@ -1,0 +1,38 @@
+{% extends 'todoapp/base.html' %}
+
+{% block content %}
+<style type="text/css">
+  .btn_add {
+    transform:translateY(20px);
+  }
+  form {
+    margin-top:40px;
+  }
+</style>
+<h3>Edit Todo Item</h3>
+<!-- FORM -->
+<form action="{% url 'todoapp:save_edit' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="todo_id" value="{{todo_item.id}}"/>
+  <div class="input-field">
+    <input type="text" id="todo_text" name="todo_text" value="{{todo_item.text}}" required/>
+    <label for="todo_text" class="black-text">Text</label>
+  </div>
+    <div class="input-field">
+      <select name="todo_type_ids" multiple>
+        {% for type in todo_types %}
+        <option value="{{type.id}}" {% if type in todo_item.types.all %}selected{% endif %}>{{type.emoji}} {{type.name}}</option>
+        {% endfor %}
+      </select>
+      <label>Types</label>
+    </div>
+    <button class="btn light-blue lighten-2 btn_add">save</button>
+</form>
+<!-- JAVASCRIPT -->
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    let elems_selects = document.querySelectorAll('select');
+    let instances_selects = M.FormSelect.init(elems_selects, {});
+  });
+</script>
+{% endblock %}

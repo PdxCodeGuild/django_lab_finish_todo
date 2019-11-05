@@ -13,6 +13,7 @@ class TodoItem(models.Model):
     text = models.CharField(max_length=500)
     date_created = models.DateTimeField(auto_now_add=True)
     date_completed = models.DateTimeField(null=True, blank=True)
+    extra_text = models.TextField()
     types = models.ManyToManyField(TodoItemType)
     
     def ordered_types(self):

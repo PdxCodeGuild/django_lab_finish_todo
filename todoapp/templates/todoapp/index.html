@@ -33,7 +33,7 @@
     align-items:center;
   }
   
-  .todo_item .btn {
+  .todo_item .btn-floating {
     margin-left:10px;
   }
   
@@ -42,50 +42,41 @@
     text-decoration:line-through;
   }
   
+  .title_div {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+  }
+  
 </style>
-<h3>Todo Items</h3>
-
-<!-- FORM -->
-<form action="{% url 'todoapp:save_todo' %}" method="post">
-  {% csrf_token %}
-  <div class="row">
-    <div class="col s5">
-      <div class="input-field inline">
-        <input type="text" id="todo_text" name="todo_text" required/>
-        <label for="todo_text" class="black-text">Text</label>
-      </div>
-      
-    </div>
-    <div class="col s5">
-      <div class="input-field inline">
-        <select name="todo_type_ids" multiple>
-          {% for type in todo_types %}
-          <option value="{{type.id}}">{{type.emoji}} {{type.name}}</option>
-          {% endfor %}
-        </select>
-        <label>Types</label>
-      </div>
-    </div>
-    <div class="col s2">
-      <button class="btn light-blue lighten-2">add</button>
-    </div>
+<div class="title_div">
+  <h3>Todo Items</h3>
+  <div>
+    <a href="{% url 'todoapp:clear_all' %}" class="btn light-blue lighten-2"><i class="material-icons">clear_all</i></a>
+    <a href="{% url 'todoapp:new' %}" class="btn light-blue lighten-2"><i class="material-icons">add</i></a>
   </div>
-</form>
+</div>
+
 
 <!-- TODO ITEMS -->
 {% for todo_item in todo_items %}
-<div class="todo_item">
+<div class="todo_item tooltipped" data-position="top" data-tooltip="Created: {{ todo_item.date_created }}{% if todo_item.date_completed %}<br/>Completed: {{todo_item.date_completed}}{% endif %}">
   <div class="{% if todo_item.date_completed %}completed{% endif %}">{{todo_item.text}}</div>
   <div class="flex_row">
     {% for type in todo_item.ordered_types %}
     <span class="tooltipped" data-position="top" data-tooltip="{{type.name}}">{{ type.emoji }}</span>
     {% endfor %}
+    <a href="{% url 'todoapp:clear_tags' %}?todo_item_id={{todo_item.id}}" class="btn btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="clear tags"><i class="material-icons">content_cut</i></a> 
     {% if not todo_item.date_completed %}
+    <a href="{% url 'todoapp:edit' todo_item.id %}" class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="edit"><i class="material-icons">edit</i></a>
     <form action="{% url 'todoapp:complete_todo' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="todo_item_id" value="{{todo_item.id}}"/>
-      <button class="btn btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="complete"><i class="material-icons">check</i></button>
+      <button class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="complete"><i class="material-icons">check</i></button>
     </form>
+    {% else %}
+    <a href="{% url 'todoapp:clear_todo' todo_item.id %}" class="btn-floating light-blue lighten-2 tooltipped" data-position="top" data-tooltip="clear"><i class="material-icons">close</i></a> 
     {% endif %}
   </div>
 </div>
@@ -95,10 +86,9 @@
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
     let elems_tooltips = document.querySelectorAll('.tooltipped')
-    let instances_tooltips = M.Tooltip.init(elems_tooltips, {})
-    
-    let elems_selects = document.querySelectorAll('select');
-    let instances_selects = M.FormSelect.init(elems_selects, {});
+    let instances_tooltips = M.Tooltip.init(elems_tooltips, {
+      enterDelay: 1000
+    })
   });
 </script>
 {% endblock %}

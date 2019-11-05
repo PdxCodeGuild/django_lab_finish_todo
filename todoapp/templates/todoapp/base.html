@@ -29,12 +29,24 @@
         text-align:center;
         padding:20px;
       }
+      
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      main {
+        flex: 1 0 auto;
+      }
+      
+      
     </style>
   </head>
   <body>
     <nav class="light-blue lighten-2">
       <div class="nav-wrapper">
-        <a href="#" class="brand-logo"><i class="material-icons">ac_unit</i>Todo App</a>
+        <a href="{% url 'todoapp:index' %}" class="brand-logo"><i class="material-icons">ac_unit</i>Todo App</a>
         <ul id="nav-mobile" class="right hide-on-small-and-down">
           <li><a href="/admin/">Admin</a></li>
         </ul>
